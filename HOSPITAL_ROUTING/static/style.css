@@ -1,0 +1,63 @@
+:root{
+  --bg:#071022;
+  --panel:#0b1220;
+  --muted:#9fb0c8;
+  --accent:#ff5252;
+  --accent2:#4fc3f7;
+  --success:#69f0ae;
+  --glass: rgba(255,255,255,0.03);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(800px 400px at 10% 10%, rgba(79,195,247,0.03), transparent 3%), var(--bg);
+  color:#e6eef6;
+  min-height:100vh;
+}
+
+.header, .topbar{padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.03)}
+.topbar{background:linear-gradient(90deg, rgba(255,82,82,0.06), rgba(79,195,247,0.02));}
+.brand{display:flex; gap:12px; align-items:center; padding:12px 24px}
+.logo{width:64px; height:64px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#ff5252,#ff8a80); font-size:28px; box-shadow:0 10px 30px rgba(255,82,82,0.08)}
+.title h1{margin:0; font-size:20px}
+.title p{margin:0; color:var(--muted); font-size:13px}
+
+.container{max-width:1050px; margin:26px auto; padding:0 18px}
+
+.panel{background:var(--panel); border-radius:12px; padding:18px; margin-bottom:18px; box-shadow:0 8px 30px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.02)}
+
+.input-panel input[type="text"], .input-panel input[type="text"]:focus{
+  width:100%; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit; outline:none; font-size:15px;
+}
+
+.buttons{margin-top:10px; display:flex; gap:8px; align-items:center}
+.btn{padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700}
+.btn.primary{background:linear-gradient(90deg,var(--accent), #ff8a80); color:#0b1220}
+.btn.ghost{background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--muted)}
+
+.hint{color:var(--muted); font-size:13px; margin-top:8px}
+
+/* grid */
+.grid{display:grid; grid-template-columns: 1fr 420px; gap:18px}
+.left{padding-right:6px}
+.right{min-width:300px}
+
+/* cards & lists */
+.card h3{margin-top:0}
+.left ul, .left li{margin:6px 0; color:var(--muted)}
+.viz{width:100%; border-radius:10px; border:1px solid rgba(255,255,255,0.03); box-shadow: 0 10px 30px rgba(0,0,0,0.6)}
+.legend{margin-top:8px; color:var(--muted); font-size:13px}
+.legend-line{display:inline-block; width:36px; height:8px; margin:0 8px; vertical-align:middle; border-radius:6px}
+.legend-line.red{background:linear-gradient(90deg,#ff8a8a,#ff5252)}
+.legend-line.blue{background:linear-gradient(90deg,#80dfff,#4fc3f7)}
+.legend-line.green{background:linear-gradient(90deg,#9fffd6,#69f0ae)}
+
+.info ol{color:var(--muted); padding-left:18px}
+
+/* responsive */
+@media (max-width:980px){
+  .grid{grid-template-columns:1fr}
+  .right{min-width:auto}
+}

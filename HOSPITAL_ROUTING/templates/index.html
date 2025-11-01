@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hospital Emergency Routing System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">🚑</div>
+      <div class="title">
+        <h1>Hospital Emergency Routing System</h1>
+        <p>Fastest ambulance routing • Minimal hospital network • Multi-stop optimization</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel input-panel">
+      <h2>Enter locations (comma-separated)</h2>
+      <form method="POST">
+        <input type="text" name="places" placeholder="Base Hospital, Patient A, Hospital B, Patient C" required>
+        <div class="buttons">
+          <button type="submit" class="btn primary">Compute Routes</button>
+          <button type="button" class="btn ghost" onclick="document.querySelector('input[name=places]').value='Base, Hosp A, Hosp B, Patient X, Patient Y'">Load Example</button>
+        </div>
+      </form>
+      <p class="hint">Algorithms used: Dijkstra (shortest path), Hamiltonian cycle (visit-all TSP), Kruskal (MST)</p>
+    </section>
+
+    {% if result %}
+      {% if result.error %}
+        <section class="panel error">{{ result.error }}</section>
+      {% else %}
+      <section class="panel grid">
+        <div class="left card">
+          <h3>Summary</h3>
+          <p><strong>Locations:</strong> {{ result.places }}</p>
+          <h4>Dijkstra distances from <em>{{ result.places[0] }}</em></h4>
+          <ul>
+            {% for p,d in zip(result.places, result.dijkstra.distances) %}
+              <li>{{ p }} → {{ d }}</li>
+            {% endfor %}
+          </ul>
+
+          <h4>Minimum Hospital Network (Kruskal MST)</h4>
+          <ul>
+            {% for u,v,w in result.mst %}
+              <li>{{ result.places[u] }} — {{ result.places[v] }} ({{ w }})</li>
+            {% endfor %}
+          </ul>
+
+          <h4>Optimized Multi-stop Route (TSP)</h4>
+          <p><strong>Path:</strong> {{ result.tsp.path | join(' → ') }}</p>
+          <p><strong>Total cost:</strong> {{ result.tsp.cost }}</p>
+        </div>
+
+        <div class="right card">
+          <h3>Visualization</h3>
+          {% if image_b64 %}
+            <img src="data:image/png;base64,{{ image_b64 }}" alt="Routing visualization" class="viz">
+            <p class="legend"><span class="legend-line red"></span> TSP route &nbsp; <span class="legend-line blue"></span> MST &nbsp; <span class="legend-line green"></span> Dijkstra parents</p>
+          {% else %}
+            <div class="placeholder">No visualization yet</div>
+          {% endif %}
+        </div>
+      </section>
+      {% endif %}
+    {% endif %}
+
+    <section class="panel info">
+      <h3>How it works</h3>
+      <ol>
+        <li><b>Dijkstra</b> computes shortest distances from the base hospital to all other locations (useful for single-ambulance dispatch).</li>
+        <li><b>Kruskal</b> builds a minimum spanning tree connecting hospitals — useful for designing low-cost communication/backup networks.</li>
+        <li><b>Hamiltonian (TSP)</b> finds a route that visits every location exactly once and returns to the base (useful when one ambulance must visit multiple patients).</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Dark-theme demo • Algorithms: Dijkstra, Kruskal, Hamiltonian (backtracking)</p>
+  </footer>
+</body>
+</html>
